@@ -84,8 +84,9 @@ def create_user():
 @app.get("/users/<int:user_id>")
 def user_movies(user_id):
     users = dm.get_users()
+    user = User.query.get(user_id)
     movies = dm.get_movies(user_id)
-    return render_template("user_movies.html", users=users, user_id=user_id, movies=movies)
+    return render_template("user_movies.html", users=users, user=user, movies=movies)
 
 
 @app.get("/movies/<int:movie_id>/update")

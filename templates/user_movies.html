@@ -7,7 +7,7 @@
   <body>
     <p><a href="{{ url_for('index') }}">← Back to users</a></p>
 
-    <h1>User {{ user_id }} — Movies</h1>
+    <h1>Movies for {{ user.name }}</h1>
 
     <h2>Add movie</h2>
     <form method="post" action="{{ url_for('add_movie', user_id=user_id) }}">
