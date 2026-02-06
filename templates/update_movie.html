@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Update Movie</title>
+  </head>
+  <body>
+    <p><a href="{{ url_for('user_movies', user_id=movie.user_id) }}">← Back to movies</a></p>
+
+    <h1>Update movie</h1>
+
+    <form method="post" action="{{ url_for('update_movie', movie_id=movie.id) }}">
+      <label>
+        New title:
+        <input type="text" name="title" value="{{ movie.name }}" required />
+      </label>
+      <button type="submit">Update</button>
+    </form>
+  </body>
+</html>

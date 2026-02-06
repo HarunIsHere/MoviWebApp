@@ -88,5 +88,42 @@ def user_movies(user_id):
     return render_template("user_movies.html", users=users, user_id=user_id, movies=movies)
 
 
+@app.get("/movies/<int:movie_id>/update")
+def update_movie_form(movie_id):
+    movie = Movie.query.get(movie_id)
+    if not movie:
+        return redirect(url_for("index"))
+
+    return render_template("update_movie.html", movie=movie)
+
+
+@app.post("/movies/<int:movie_id>/update")
+def update_movie(movie_id):
+    movie = Movie.query.get(movie_id)
+    if not movie:
+        return redirect(url_for("index"))
+
+    user_id = movie.user_id
+
+    new_title = request.form.get("title", "").strip()
+    if not new_title:
+        return redirect(url_for("user_movies", user_id=user_id))
+
+    data = fetch_movie_from_omdb(new_title)
+
+    # If OMDb fails, update only the title
+    movie.name = data.get("Title", new_title) if data else new_title
+    movie.director = (data.get("Director") if data else movie.director)
+    movie.year = (
+        int(data["Year"][:4])
+        if data and data.get("Year") and data["Year"][:4].isdigit()
+        else movie.year
+    )
+    movie.poster_url = (data.get("Poster") if data else movie.poster_url)
+
+    db.session.commit()
+    return redirect(url_for("user_movies", user_id=user_id))
+
+
 if __name__ == "__main__":
     app.run(debug=True)

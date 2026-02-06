@@ -37,6 +37,8 @@
             {% if movie.year %} ({{ movie.year }}){% endif %}
             {% if movie.director %} — {{ movie.director }}{% endif %}
 
+            <a href="{{ url_for('update_movie_form', movie_id=movie.id) }}">Update</a>
+
             <form method="post" action="{{ url_for('delete_movie', movie_id=movie.id) }}" style="display:inline;">
               <input type="hidden" name="user_id" value="{{ user_id }}">
               <button type="submit">Delete</button>
