@@ -1,3 +1,6 @@
+import os
+import requests
+from models import Movie
 from flask import Flask, render_template, request, redirect, url_for
 from models import db
 from data_manager import DataManager
@@ -19,10 +22,55 @@ with app.app_context():
 dm = DataManager()
 
 
+def fetch_movie_from_omdb(title: str) -> dict | None:
+    api_key = os.environ.get("OMDB_API_KEY", "").strip()
+    if not api_key:
+        return None
+
+    r = requests.get(
+        "https://www.omdbapi.com/",
+        params={"apikey": api_key, "t": title},
+        timeout=10,
+    )
+    data = r.json()
+    if data.get("Response") != "True":
+        return None
+    return data
+
+
 @app.get("/")
 def index():
     users = dm.get_users()
     return render_template("index.html", users=users)
+
+
+@app.post("/users/<int:user_id>/movies")
+def add_movie(user_id):
+    title = request.form.get("title", "").strip()
+    if not title:
+        return redirect(url_for("user_movies", user_id=user_id))
+
+    data = fetch_movie_from_omdb(title)
+
+    # If OMDb fails (missing key or not found), still add minimal movie with just the title
+    movie = Movie(
+        name=data.get("Title", title) if data else title,
+        director=(data.get("Director") if data else None),
+        year=(int(data["Year"][:4]) if data and data.get("Year") and data["Year"][:4].isdigit() else None),
+        poster_url=(data.get("Poster") if data else None),
+        user_id=user_id,
+    )
+
+    dm.add_movie(movie)
+    return redirect(url_for("user_movies", user_id=user_id))
+
+
+@app.post("/movies/<int:movie_id>/delete")
+def delete_movie(movie_id):
+    dm.delete_movie(movie_id)
+    # we need to redirect back to the user's page; get user_id from hidden form field
+    user_id = request.form.get("user_id", type=int)
+    return redirect(url_for("user_movies", user_id=user_id))
 
 
 @app.post("/users")

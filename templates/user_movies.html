@@ -9,6 +9,12 @@
 
     <h1>User {{ user_id }} — Movies</h1>
 
+    <h2>Add movie</h2>
+    <form method="post" action="{{ url_for('add_movie', user_id=user_id) }}">
+      <input type="text" name="title" placeholder="Movie title" required />
+      <button type="submit">Add</button>
+    </form>
+
     <h2>Switch user</h2>
     <ul>
       {% for user in users %}
@@ -23,8 +29,18 @@
       <ul>
         {% for movie in movies %}
           <li>
-            {{ movie.name }}
+            {% if movie.poster_url %}
+              <img src="{{ movie.poster_url }}" alt="poster" width="60" />
+            {% endif %}
+
+            <strong>{{ movie.name }}</strong>
             {% if movie.year %} ({{ movie.year }}){% endif %}
+            {% if movie.director %} — {{ movie.director }}{% endif %}
+
+            <form method="post" action="{{ url_for('delete_movie', movie_id=movie.id) }}" style="display:inline;">
+              <input type="hidden" name="user_id" value="{{ user_id }}">
+              <button type="submit">Delete</button>
+            </form>
           </li>
         {% endfor %}
       </ul>
