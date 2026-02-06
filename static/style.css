@@ -1,0 +1,124 @@
+/* Basic reset */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  line-height: 1.4;
+  background: #f6f7fb;
+  color: #111;
+}
+
+/* Layout */
+header {
+  background: #2f6fed;
+  color: white;
+  padding: 14px 0;
+  margin-bottom: 24px;
+}
+
+header nav {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+header a {
+  color: white;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+}
+
+/* Headings */
+h1 {
+  margin: 0 0 12px;
+  font-size: 44px;
+}
+
+h2 {
+  margin: 28px 0 10px;
+  font-size: 24px;
+}
+
+/* Lists */
+ul {
+  padding-left: 18px;
+}
+
+.user-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.user-entry {
+  margin: 10px 0;
+}
+
+/* Links + Buttons */
+a {
+  color: #2f6fed;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  cursor: pointer;
+  border: 0;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-weight: 600;
+}
+
+button[type="submit"] {
+  background: #2f6fed;
+  color: white;
+}
+
+button[type="submit"]:hover {
+  filter: brightness(0.95);
+}
+
+/* Forms */
+form {
+  margin: 10px 0;
+}
+
+input[type="text"] {
+  padding: 8px 10px;
+  border: 1px solid #d6d8e0;
+  border-radius: 10px;
+  outline: none;
+  min-width: 220px;
+}
+
+input[type="text"]:focus {
+  border-color: #2f6fed;
+}
+
+/* Movies list */
+img {
+  border-radius: 10px;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+li {
+  margin: 12px 0;
+}
+
+/* Inline forms */
+form[style*="display:inline"] {
+  margin-left: 8px;
+}
