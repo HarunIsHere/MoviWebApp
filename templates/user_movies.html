@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>User Movies</title>
+  </head>
+  <body>
+    <p><a href="{{ url_for('index') }}">← Back to users</a></p>
+
+    <h1>User {{ user_id }} — Movies</h1>
+
+    <h2>Switch user</h2>
+    <ul>
+      {% for user in users %}
+        <li>
+          <a href="{{ url_for('user_movies', user_id=user.id) }}">{{ user.name }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <h2>Movies</h2>
+    {% if movies %}
+      <ul>
+        {% for movie in movies %}
+          <li>
+            {{ movie.name }}
+            {% if movie.year %} ({{ movie.year }}){% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No movies yet.</p>
+    {% endif %}
+  </body>
+</html>

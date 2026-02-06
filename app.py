@@ -33,5 +33,12 @@ def create_user():
     return redirect(url_for("index"))
 
 
+@app.get("/users/<int:user_id>")
+def user_movies(user_id):
+    users = dm.get_users()
+    movies = dm.get_movies(user_id)
+    return render_template("user_movies.html", users=users, user_id=user_id, movies=movies)
+
+
 if __name__ == "__main__":
     app.run(debug=True)
