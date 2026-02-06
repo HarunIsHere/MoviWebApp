@@ -149,8 +149,26 @@ def update_movie(movie_id):
 @app.post("/users/<int:user_id>/movies/<int:movie_id>/update")
 def update_movie_codio(user_id, movie_id):
     new_title = request.form.get("title", "").strip()
-    if new_title:
-        dm.update_movie(movie_id, {"name": new_title})
+    if not new_title:
+        return redirect(url_for("user_movies", user_id=user_id))
+
+    data = fetch_movie_from_omdb(new_title)
+
+    payload = {"name": new_title}
+
+    if data:
+        payload = {
+            "name": data.get("Title", new_title),
+            "director": data.get("Director"),
+            "year": (
+                int(data["Year"][:4])
+                if data.get("Year") and data["Year"][:4].isdigit()
+                else None
+            ),
+            "poster_url": data.get("Poster"),
+        }
+
+    dm.update_movie(movie_id, payload)
     return redirect(url_for("user_movies", user_id=user_id))
 
 
