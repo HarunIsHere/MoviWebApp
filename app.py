@@ -8,7 +8,8 @@ from data_manager import DataManager
 app = Flask(__name__)
 
 # Database config
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///moviwebapp.sqlite3"
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{os.path.join(basedir, 'data/movies.db')}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # Init SQLAlchemy
