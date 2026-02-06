@@ -20,12 +20,21 @@ class DataManager:
         db.session.commit()
         return movie
 
-    def update_movie(self, movie_id: int, new_title: str) -> Movie | None:
+    def update_movie(self, movie_id: int, updated_fields: dict) -> Movie | None:
         movie = Movie.query.get(movie_id)
         if not movie:
             return None
 
-        movie.name = new_title
+        # Update only fields that are provided
+        if "name" in updated_fields:
+            movie.name = updated_fields["name"]
+        if "director" in updated_fields:
+            movie.director = updated_fields["director"]
+        if "year" in updated_fields:
+            movie.year = updated_fields["year"]
+        if "poster_url" in updated_fields:
+            movie.poster_url = updated_fields["poster_url"]
+
         db.session.commit()
         return movie
 

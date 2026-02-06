@@ -112,17 +112,21 @@ def update_movie(movie_id):
 
     data = fetch_movie_from_omdb(new_title)
 
-    # If OMDb fails, update only the title
-    movie.name = data.get("Title", new_title) if data else new_title
-    movie.director = (data.get("Director") if data else movie.director)
-    movie.year = (
-        int(data["Year"][:4])
-        if data and data.get("Year") and data["Year"][:4].isdigit()
-        else movie.year
-    )
-    movie.poster_url = (data.get("Poster") if data else movie.poster_url)
+    payload = {"name": new_title}
 
-    db.session.commit()
+    if data:
+        payload = {
+            "name": data.get("Title", new_title),
+            "director": data.get("Director"),
+            "year": (
+                int(data["Year"][:4])
+                if data.get("Year") and data["Year"][:4].isdigit()
+                else None
+            ),
+            "poster_url": data.get("Poster"),
+        }
+
+    dm.update_movie(movie_id, payload)
     return redirect(url_for("user_movies", user_id=user_id))
 
 
