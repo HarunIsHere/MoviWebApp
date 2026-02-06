@@ -93,7 +93,7 @@ def user_movies(user_id):
     user = User.query.get(user_id)
     movies = dm.get_movies(user_id)
     return render_template(
-        "user_movies.html",
+        "movies.html",
         users=users,
         user=user,
         user_id=user_id,

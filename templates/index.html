@@ -1,27 +1,23 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>MoviWebApp</title>
-  </head>
-  <body>
-    <h1>MoviWebApp</h1>
+{% extends "base.html" %}
 
-    <h2>Create user</h2>
-    <form method="post" action="/users">
-      <input type="text" name="name" placeholder="User name" required />
-      <button type="submit">Create</button>
-    </form>
+{% block content %}
+  <h1>Users</h1>
 
-    <h2>Users</h2>
-    {% if users %}
-      <ul>
-        {% for user in users %}
-          <li><a href="{{ url_for('user_movies', user_id=user.id) }}">{{ user.name }}</a></li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p>No users yet.</p>
-    {% endif %}
-  </body>
-</html>
+  {% if users %}
+    <ul class="user-list">
+      {% for user in users %}
+        <li class="user-entry">
+          <a href="{{ url_for('user_movies', user_id=user.id) }}">{{ user.name }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No users yet.</p>
+  {% endif %}
+
+  <h2>Add new user</h2>
+  <form action="{{ url_for('create_user') }}" method="post">
+    <input type="text" name="name" placeholder="User name" required />
+    <button type="submit">Create</button>
+  </form>
+{% endblock %}
