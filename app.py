@@ -137,5 +137,10 @@ def update_movie(movie_id):
     return redirect(url_for("user_movies", user_id=user_id))
 
 
+@app.get("/users")
+def list_users():
+    users = dm.get_users()
+    return "<br>".join([f"{u.id}: {u.name}" for u in users])
+
 if __name__ == "__main__":
     app.run(debug=True)
