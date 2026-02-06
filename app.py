@@ -73,6 +73,11 @@ def delete_movie(movie_id):
     user_id = request.form.get("user_id", type=int)
     return redirect(url_for("user_movies", user_id=user_id))
 
+@app.post("/users/<int:user_id>/movies/<int:movie_id>/delete")
+def delete_movie_codio(user_id, movie_id):
+    dm.delete_movie(movie_id)
+    return redirect(url_for("user_movies", user_id=user_id))
+
 
 @app.post("/users")
 def create_user():
@@ -94,6 +99,11 @@ def user_movies(user_id):
         user_id=user_id,
         movies=movies
     )
+
+
+@app.get("/users/<int:user_id>/movies")
+def user_movies_alias(user_id):
+    return user_movies(user_id)
 
 
 @app.get("/movies/<int:movie_id>/update")
@@ -134,6 +144,13 @@ def update_movie(movie_id):
         }
 
     dm.update_movie(movie_id, payload)
+    return redirect(url_for("user_movies", user_id=user_id))
+
+@app.post("/users/<int:user_id>/movies/<int:movie_id>/update")
+def update_movie_codio(user_id, movie_id):
+    new_title = request.form.get("title", "").strip()
+    if new_title:
+        dm.update_movie(movie_id, {"name": new_title})
     return redirect(url_for("user_movies", user_id=user_id))
 
 
