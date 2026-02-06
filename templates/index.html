@@ -1,23 +1,52 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Users</h1>
+  <div class="columns is-variable is-6">
+    <!-- Left: Users -->
+    <div class="column is-4">
+      <div class="box">
+        <h1 class="title is-4">Users</h1>
 
-  {% if users %}
-    <ul class="user-list">
-      {% for user in users %}
-        <li class="user-entry">
-          <a href="{{ url_for('user_movies', user_id=user.id) }}">{{ user.name }}</a>
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>No users yet.</p>
-  {% endif %}
+        {% if users %}
+          <div class="buttons is-flex is-flex-direction-column">
+            {% for user in users %}
+              <a class="button is-link is-light is-fullwidth"
+                 href="{{ url_for('user_movies', user_id=user.id) }}">
+                {{ user.name }}
+              </a>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="has-text-grey">No users yet.</p>
+        {% endif %}
 
-  <h2>Add new user</h2>
-  <form action="{{ url_for('create_user') }}" method="post">
-    <input type="text" name="name" placeholder="User name" required />
-    <button type="submit">Create</button>
-  </form>
+        <hr>
+
+        <h2 class="title is-5">Add new user</h2>
+        <form action="{{ url_for('create_user') }}" method="post">
+          <div class="field">
+            <div class="control">
+              <input class="input" type="text" name="name" placeholder="User name" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="control">
+              <button class="button is-primary is-fullwidth" type="submit">Create</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Right: Info -->
+    <div class="column is-8">
+      <div class="box">
+        <h1 class="title is-4">Welcome</h1>
+        <p class="has-text-grey">
+          Select a user on the left to view and manage their favorite movies.
+        </p>
+      </div>
+    </div>
+  </div>
 {% endblock %}

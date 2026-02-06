@@ -1,52 +1,106 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <p><a href="{{ url_for('index') }}">← Back to users</a></p>
+  <div class="columns is-variable is-6">
+    <!-- Left: Users -->
+    <div class="column is-4">
+      <div class="box">
+        <h1 class="title is-4">Users</h1>
 
-  <h1>Movies for {{ user.name }}</h1>
+        <div class="buttons is-flex is-flex-direction-column">
+          {% for u in users %}
+            <a class="button is-link {% if u.id == user.id %}is-active{% else %}is-light{% endif %} is-fullwidth"
+               href="{{ url_for('user_movies', user_id=u.id) }}">
+              {{ u.name }}
+            </a>
+          {% endfor %}
+        </div>
 
-  <h2>Add movie</h2>
-  <form method="post" action="{{ url_for('add_movie', user_id=user.id) }}">
-    <input type="text" name="title" placeholder="Movie title" required />
-    <button type="submit">Add</button>
-  </form>
+        <hr>
 
-  <h2>Switch user</h2>
-  <ul>
-    {% for u in users %}
-      <li><a href="{{ url_for('user_movies', user_id=u.id) }}">{{ u.name }}</a></li>
-    {% endfor %}
-  </ul>
+        <a class="button is-fullwidth" href="{{ url_for('index') }}">← Back to users</a>
+      </div>
+    </div>
 
-  <h2>Movies</h2>
-  {% if movies %}
-    <ul>
-      {% for movie in movies %}
-        <li>
-          {% if movie.poster_url %}
-            <img src="{{ movie.poster_url }}" alt="poster" width="60" />
-          {% endif %}
+    <!-- Right: Movies -->
+    <div class="column is-8">
+      <div class="box">
+        <h1 class="title is-4">Movies for {{ user.name }}</h1>
 
-          <strong>{{ movie.name }}</strong>
-          {% if movie.year %} ({{ movie.year }}){% endif %}
-          {% if movie.director %} — {{ movie.director }}{% endif %}
+        <h2 class="title is-6">Add new movie</h2>
+        <form method="post" action="{{ url_for('add_movie', user_id=user.id) }}">
+          <div class="field has-addons">
+            <div class="control is-expanded">
+              <input class="input" type="text" name="title" placeholder="Movie title" required>
+            </div>
+            <div class="control">
+              <button class="button is-primary" type="submit">Add</button>
+            </div>
+          </div>
+        </form>
 
-          <form method="post"
-                action="{{ url_for('update_movie_codio', user_id=user.id, movie_id=movie.id) }}"
-                style="display:inline;">
-            <input type="text" name="title" value="{{ movie.name }}" required />
-            <button type="submit">Update</button>
-          </form>
+        <hr>
 
-          <form method="post"
-                action="{{ url_for('delete_movie_codio', user_id=user.id, movie_id=movie.id) }}"
-                style="display:inline;">
-            <button type="submit">Delete</button>
-          </form>
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>No movies yet.</p>
-  {% endif %}
+        {% if movies %}
+          <div class="content">
+            <ul style="list-style: none; margin-left: 0;">
+              {% for movie in movies %}
+                <li class="mb-5">
+                  <article class="media">
+                    <figure class="media-left">
+                      {% if movie.poster_url %}
+                        <p class="image is-96x96">
+                          <img src="{{ movie.poster_url }}" alt="poster" style="object-fit: cover;">
+                        </p>
+                      {% else %}
+                        <p class="image is-96x96">
+                          <img src="https://via.placeholder.com/96x96?text=No+Poster" alt="no poster">
+                        </p>
+                      {% endif %}
+                    </figure>
+
+                    <div class="media-content">
+                      <div class="content">
+                        <p>
+                          <strong>{{ movie.name }}</strong>
+                          {% if movie.year %} <small>({{ movie.year }})</small>{% endif %}
+                          <br>
+                          {% if movie.director %}
+                            <span class="has-text-grey">Director: {{ movie.director }}</span>
+                          {% endif %}
+                        </p>
+                      </div>
+
+                      <div class="field is-grouped is-grouped-multiline">
+                        <!-- Codio-style UPDATE (title only) -->
+                        <form method="post"
+                              action="{{ url_for('update_movie_codio', user_id=user.id, movie_id=movie.id) }}">
+                          <div class="field has-addons">
+                            <div class="control">
+                              <input class="input" type="text" name="title" value="{{ movie.name }}" required>
+                            </div>
+                            <div class="control">
+                              <button class="button is-info" type="submit">Update</button>
+                            </div>
+                          </div>
+                        </form>
+
+                        <!-- Codio-style DELETE -->
+                        <form method="post"
+                              action="{{ url_for('delete_movie_codio', user_id=user.id, movie_id=movie.id) }}">
+                          <button class="button is-danger is-light" type="submit">Delete</button>
+                        </form>
+                      </div>
+                    </div>
+                  </article>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% else %}
+          <p class="has-text-grey">No movies yet.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
 {% endblock %}

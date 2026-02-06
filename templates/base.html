@@ -4,17 +4,25 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>MoviWebApp</title>
+
+    <!-- Bulma -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+
+    <!-- Your overrides (optional) -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   </head>
-  <body>
-    <header>
-      <nav>
-        <a href="{{ url_for('index') }}">Home</a>
-      </nav>
-    </header>
 
-    <main class="container">
-      {% block content %}{% endblock %}
-    </main>
+  <body>
+    <section class="section">
+      <div class="container">
+        <nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
+          <div class="navbar-brand">
+            <a class="navbar-item has-text-weight-bold" href="{{ url_for('index') }}">🎬 MoviWebApp</a>
+          </div>
+        </nav>
+
+        {% block content %}{% endblock %}
+      </div>
+    </section>
   </body>
 </html>
