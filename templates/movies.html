@@ -72,7 +72,6 @@
                       </div>
 
                       <div class="field is-grouped is-grouped-multiline">
-                        <!-- Codio-style UPDATE (title only) -->
                         <form method="post"
                               action="{{ url_for('update_movie_codio', user_id=user.id, movie_id=movie.id) }}">
                           <div class="field has-addons">
@@ -85,7 +84,6 @@
                           </div>
                         </form>
 
-                        <!-- Codio-style DELETE -->
                         <form method="post"
                               action="{{ url_for('delete_movie_codio', user_id=user.id, movie_id=movie.id) }}">
                           <button class="button is-danger is-light" type="submit">Delete</button>

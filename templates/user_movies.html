@@ -2,8 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>User Movies</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<!-- Page stylesheet -->
   </head>
+
   <body>
     <p><a href="{{ url_for('index') }}">← Back to users</a></p>
 
@@ -37,23 +41,18 @@
             {% if movie.year %} ({{ movie.year }}){% endif %}
             {% if movie.director %} — {{ movie.director }}{% endif %}
 
-            <!-- Codio-style UPDATE: POST, title only, no OMDb -->
             <form method="post"
                   action="{{ url_for('update_movie_codio', user_id=user.id, movie_id=movie.id) }}"
-                  style="display:inline;">
+                  class="inline-form">
               <input type="text" name="title" value="{{ movie.name }}" required />
               <button type="submit">Update</button>
             </form>
 
-            <!-- Codio-style DELETE: POST -->
             <form method="post"
                   action="{{ url_for('delete_movie_codio', user_id=user.id, movie_id=movie.id) }}"
-                  style="display:inline;">
+                  class="inline-form">
               <button type="submit">Delete</button>
             </form>
-
-            <!-- Optional: keep your separate update page too -->
-            <!-- <a href="{{ url_for('update_movie_form', movie_id=movie.id) }}">Update page</a> -->
           </li>
         {% endfor %}
       </ul>

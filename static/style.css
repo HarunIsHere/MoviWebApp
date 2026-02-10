@@ -1,5 +1,7 @@
 /* Basic reset */
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -118,7 +120,8 @@ li {
   margin: 12px 0;
 }
 
-/* Inline forms */
-form[style*="display:inline"] {
+/* Inline forms: prefer class */
+.inline-form {
+  display: inline;
   margin-left: 8px;
 }
